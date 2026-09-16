@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import { useTranslations, type Lang } from '../i18n';
+import kemenperin from '../assets/clients/kemenperin.png';
+import kemenag from '../assets/clients/kemenag.png';
+import pupr from '../assets/clients/pupr.png';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const logoClients = [
+  { src: kemenperin, alt: 'Kementerian Perindustrian Republik Indonesia (Ministry of Industry)' },
+  { src: kemenag, alt: 'Kementerian Agama Republik Indonesia (Ministry of Religious Affairs)' },
+  { src: pupr, alt: 'Kementerian PUPR (Ministry of Public Works and Housing)' },
+];
+const textClients = ['SIAGA Pendis', 'Al-Azhary', 'Pratista', 'Keptiv'];
+---
+<section class="border-y border-line bg-tint">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-10 gap-y-4 px-4 py-5">
+    <span class="text-xs font-semibold uppercase tracking-wider text-muted">{t('clients.label')}</span>
+    {logoClients.map(c => (
+      <Image src={c.src} alt={c.alt} height={30}
+             class="h-[30px] w-auto grayscale opacity-60 transition hover:grayscale-0 hover:opacity-100" />
+    ))}
+    {textClients.map(c => <span class="text-sm font-semibold text-ink/55">{c}</span>)}
+  </div>
+</section>

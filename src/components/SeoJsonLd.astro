@@ -1,0 +1,31 @@
+---
+// src/components/SeoJsonLd.astro
+import { site } from '../data/site';
+const { lang } = Astro.props as { lang: string };
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  legalName: site.legalName,
+  url: site.origin,
+  logo: `${site.origin}/icon-512.png`,
+  image: `${site.origin}/social-card.png`,
+  email: site.email,
+  telephone: site.phone,
+  inLanguage: lang,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  areaServed: ['ID', 'SG', 'MY', 'MV'],
+  sameAs: site.socials,
+};
+
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={json} is:inline />

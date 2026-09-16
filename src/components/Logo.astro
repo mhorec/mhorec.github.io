@@ -1,0 +1,12 @@
+---
+interface Props { size?: number; label?: string; decorative?: boolean; }
+const { size = 36, label = 'MH', decorative = false } = Astro.props;
+const a11yProps = decorative
+  ? { 'aria-hidden': 'true' as const }
+  : { role: 'img' as const, 'aria-label': 'MHCreation' };
+---
+<svg width={size} height={size} viewBox="0 0 86 86" {...a11yProps}>
+  <rect x="3" y="3" width="80" height="80" rx="20" fill="none" stroke="var(--color-brand-green)" stroke-width="6" />
+  <path d="M52 15c-7 1-11 6-11 12 6 1 11-3 12-8z" fill="var(--color-brand-green)" />
+  <text x="43" y="56" text-anchor="middle" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="var(--color-brand-blue)">{label}</text>
+</svg>

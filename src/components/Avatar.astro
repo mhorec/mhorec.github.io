@@ -1,0 +1,9 @@
+---
+interface Props { initials: string; size?: number; }
+const { initials, size = 88 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 86 86" role="img" aria-hidden="true" focusable="false">
+  <rect x="3" y="3" width="80" height="80" rx="20" fill="#fff" stroke="var(--color-brand-green)" stroke-width="4" />
+  <path d="M52 15c-7 1-11 6-11 12 6 1 11-3 12-8z" fill="var(--color-brand-green)" />
+  <text x="43" y="55" text-anchor="middle" font-family="system-ui,sans-serif" font-size="25" font-weight="700" fill="var(--color-brand-blue)">{initials}</text>
+</svg>

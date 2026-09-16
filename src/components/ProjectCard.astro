@@ -1,0 +1,72 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { Project } from '../data/projects';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { project: Project; lang: Lang; }
+const { project: p, lang } = Astro.props;
+const t = useTranslations(lang);
+const summary = lang === 'id' && p.summary_id ? p.summary_id : p.summary;
+const host = p.url ? new URL(p.url).host.replace(/^www\./, '') : null;
+// Three distinct presentations, spelled out rather than nested ternaries:
+//  - 'link'     — has a url: an <a> that opens the live site in a new tab.
+//  - 'lightbox' — no url, has an image: a <button> that opens the lightbox.
+//  - 'static'   — neither: informational only, must not look interactive.
+const mode = p.url ? 'link' : p.image ? 'lightbox' : 'static';
+const Tag = mode === 'link' ? 'a' : mode === 'lightbox' ? 'button' : 'div';
+// Lightbox needs a src too, but it must stay an *optimised* derivative —
+// referencing the raw import's `.src` copies the original, unoptimised
+// source file (up to 14 MB) straight into the build output. Only generate
+// it for cards that actually use the lightbox; otherwise every url-having
+// card with an image would emit an unused 1200px derivative.
+const lightboxSrc = mode === 'lightbox'
+  ? (await getImage({ src: p.image!, width: 1200, format: 'webp' })).src
+  : undefined;
+---
+<Tag
+  class={`${mode !== 'static' ? 'pcard group' : ''} block overflow-hidden rounded-xl border border-line bg-white text-left`}
+  data-category={p.category}
+  data-slug={p.slug}
+  {...mode === 'link'
+    ? { href: p.url, target: '_blank', rel: 'noopener noreferrer' }
+    : mode === 'lightbox'
+    ? { type: 'button', 'data-lightbox': lightboxSrc, 'data-alt': p.alt }
+    : {}}
+>
+  <div class="relative aspect-video overflow-hidden bg-tint">
+    {p.image ? (
+      <Image src={p.image} alt={p.alt} widths={[320, 480, 640]}
+             sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px"
+             format="webp" loading="lazy"
+             class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+    ) : (
+      <div role="img" aria-label={p.alt}
+           class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-blue-ink to-brand-green-ink p-4">
+        <span class="text-center text-sm font-bold leading-tight text-white/95">{p.title}</span>
+      </div>
+    )}
+  </div>
+  <div class="p-4">
+    <span class={`inline-block rounded px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white ${
+      mode === 'link' ? 'bg-brand-blue-ink' : 'bg-brand-green-ink'}`}>
+      {t(`work.filters.${p.category}`)}
+    </span>
+    <h3 class="mt-2 text-[15px] font-semibold tracking-tight text-ink">{p.title}</h3>
+    {p.credit && <p class="text-[11px] text-muted">{t('work.creditPrefix')} {p.credit}</p>}
+    <p class="mt-1 text-xs leading-relaxed text-muted">{summary}</p>
+    {mode !== 'static' && (
+      <span class={`mt-3 inline-block text-[11px] font-semibold ${mode === 'link' ? 'text-brand-blue-ink' : 'text-green-chip-ink'}`}>
+        {mode === 'link' ? (<>{host} ↗<span class="sr-only"> {t('work.opensNewTab')}</span></>) : t('work.viewDesign')}
+      </span>
+    )}
+  </div>
+</Tag>
+
+<style>
+  /* Hover is image-only: the card itself never moves, tilts or gains a shadow. */
+  .pcard { transition: border-color .3s; }
+  .pcard:hover { border-color: var(--color-brand-blue); }
+  @media (prefers-reduced-motion: reduce) {
+    .pcard:hover :global(img) { transform: none; }
+  }
+</style>

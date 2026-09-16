@@ -1,0 +1,26 @@
+---
+import { site } from '../data/site';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent('Project enquiry — MHCreation')}`;
+---
+<section id="contact" class="bg-brand-deep">
+  <div class="mx-auto max-w-6xl px-4 py-12 md:py-16">
+    <h2 class="font-display text-4xl font-extrabold tracking-[-0.03em] text-white md:text-5xl">{t('contact.title')}</h2>
+    <p class="mt-2 max-w-lg text-white/85">{t('contact.lead')}</p>
+    <div class="mt-7 flex flex-wrap gap-3">
+      <a href={site.whatsappUrl} target="_blank" rel="noopener"
+         class="rounded-lg bg-brand-green-ink px-6 py-3 text-sm font-semibold text-white">{t('contact.whatsapp')}</a>
+      <a href={mailto} class="rounded-lg border border-white/25 px-6 py-3 text-sm font-semibold text-white">
+        {t('contact.email')}
+      </a>
+    </div>
+    <address class="mt-8 not-italic text-sm leading-relaxed text-white/70">
+      {site.address.street}<br />{site.address.city}, {site.address.region} {site.address.postalCode}, Indonesia<br />
+      <a class="text-blue-soft" href={`tel:+${site.whatsapp}`}>{site.phone}</a> ·
+      <a class="text-blue-soft" href={mailto}>{site.email}</a>
+    </address>
+  </div>
+</section>

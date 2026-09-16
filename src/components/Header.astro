@@ -1,0 +1,48 @@
+---
+import { site } from '../data/site';
+import { useTranslations, getAltPath, type Lang } from '../i18n';
+import Logo from './Logo.astro';
+
+interface Props { lang: Lang; path: string; }
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
+const other: Lang = lang === 'en' ? 'id' : 'en';
+const prefix = lang === 'id' ? '/id' : '';
+const links = [
+  { href: `${prefix}/#services`, label: t('nav.services') },
+  { href: `${prefix}/#work`,     label: t('nav.work') },
+  { href: `${prefix}/#team`,     label: t('nav.team') },
+  { href: `${prefix}/#contact`,  label: t('nav.contact') },
+];
+---
+<header class="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
+    <a href={`${prefix}/`} class="flex items-center gap-2 font-display text-lg font-extrabold tracking-[-0.02em] text-ink">
+      <Logo size={30} decorative />
+      <span>MHCreation</span>
+    </a>
+
+    <nav class="ml-auto hidden md:block" aria-label="Main">
+      <ul class="flex items-center gap-6 text-sm font-medium text-muted">
+        {links.map(l => <li><a class="hover:text-brand-blue-ink" href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <a href={getAltPath(path, other)} hreflang={other} rel="alternate"
+       class="rounded-md border border-line px-3 py-1.5 text-xs font-semibold text-muted hover:border-brand-blue hover:text-brand-blue-ink">
+      {t('lang.switchTo')}
+    </a>
+
+    <a href={site.whatsappUrl} target="_blank" rel="noopener"
+       class="hidden rounded-md bg-brand-green-ink px-4 py-2 text-sm font-semibold text-white sm:inline-block">
+      WhatsApp
+    </a>
+
+    <details class="relative md:hidden">
+      <summary aria-label={t('a11y.openMenu')} class="cursor-pointer list-none rounded-md border border-line px-3 py-2 text-sm">☰</summary>
+      <ul class="absolute right-0 mt-2 w-48 rounded-lg border border-line bg-white p-2 shadow-lg">
+        {links.map(l => <li><a class="block rounded px-3 py-2 text-sm hover:bg-tint" href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </details>
+  </div>
+</header>

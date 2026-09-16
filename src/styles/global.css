@@ -1,0 +1,55 @@
+@import "tailwindcss";
+/* Self-hosted variable sans — no third-party font request. */
+@import "@fontsource-variable/inter/wght.css";
+/* Display face for headlines, section titles and the wordmark — body copy stays Inter. */
+@import "@fontsource-variable/bricolage-grotesque/wght.css";
+
+@theme {
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Inter Variable", system-ui, sans-serif;
+  --color-brand-blue:  #0880E0;
+  --color-brand-green: #40B048;
+  --color-brand-deep:  #062A4A;
+  --color-ink:         #0D1B26;
+  --color-muted:       #5B7183;
+  --color-tint:        #F6FAFD;
+  --color-line:        #E6EDF3;
+
+  /* Accessible variants for TEXT and BUTTON FILLS only.
+     The logo hues fail WCAG AA when they carry text:
+     white on #40B048 = 2.79, white on #0880E0 = 4.06 (need 4.5).
+     Measured ratios for these: white on blue-ink 4.88, white on green-ink 5.06,
+     green-chip-ink on #EAF6EC 4.71. */
+  --color-brand-blue-ink:  #0773C9;
+  --color-brand-green-ink: #2E7E33;
+  --color-blue-soft:       #E6F2FD;
+  --color-blue-chip-ink:   #0868B8;
+  --color-green-soft:      #EAF6EC;
+  --color-green-chip-ink:  #287C2F;
+}
+
+/* Light-on-dark pairings used on full-bleed brand-deep sections (Contact, Work heading band).
+   All reuse existing tokens — no new hex added. Measured against --color-brand-deep #062A4A
+   (relative luminance 0.0202):
+     white              (#FFFFFF) → 14.96:1
+     white/85           (blended ~#D9E0F0) → 11.15:1
+     white/70           (blended ~#B4BFC8) → 8.02:1
+     --color-blue-soft  (#E6F2FD, used as link text on dark bg) → 13.17:1
+   All comfortably clear WCAG AA's 4.5:1 for normal text. */
+
+html { scroll-behavior: smooth; }
+body { background: #fff; color: var(--color-ink); font-family: var(--font-sans); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-brand-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

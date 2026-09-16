@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86 86" width="512" height="512">
+  <rect width="86" height="86" rx="18" fill="#fff"/>
+  <rect x="7" y="7" width="72" height="72" rx="18" fill="none" stroke="#40B048" stroke-width="7"/>
+  <path d="M54 17c-8 1-12 7-12 13 7 1 12-3 13-9z" fill="#40B048"/>
+  <text x="43" y="57" text-anchor="middle" font-family="system-ui,Arial,sans-serif" font-size="27" font-weight="700" fill="#0880E0">MH</text>
+</svg>

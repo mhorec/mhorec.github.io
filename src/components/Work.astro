@@ -1,0 +1,34 @@
+---
+import { projects } from '../data/projects';
+import ProjectCard from './ProjectCard.astro';
+import ProjectGrid from './ProjectGrid.tsx';
+import Lightbox from './Lightbox.tsx';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const categories = [...new Set(projects.map(p => p.category))];
+const rows = projects.map(p => ({ slug: p.slug, category: p.category }));
+const labels: Record<string, string> = { all: t('work.filters.all'), resultCount: t('work.resultCount') };
+for (const c of categories) labels[c] = t(`work.filters.${c}`);
+---
+<section id="work" class="border-t border-line bg-tint">
+  <div class="bg-brand-deep">
+    <div class="mx-auto max-w-6xl px-4 py-10 md:py-12">
+      <h2 class="font-display text-4xl font-extrabold tracking-[-0.03em] text-white md:text-5xl">{t('work.title')}</h2>
+      <p class="mt-2 max-w-xl text-white/85">{t('work.lead')}</p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-10 md:py-12">
+    <ProjectGrid client:visible rows={rows} labels={labels} categories={categories} />
+
+    <div class="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(230px,1fr))]">
+      {projects.map(p => <ProjectCard project={p} lang={lang} />)}
+    </div>
+
+    <Lightbox client:idle closeLabel={t('a11y.closeDialog')} />
+  </div>
+</section>
