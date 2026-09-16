@@ -19,17 +19,37 @@ for (const size of [32, 180, 192, 512]) {
   await sharp(buf, { density: 400 }).resize(size, size).png().toFile(`public/${name}`);
 }
 
+// ---- Social card (1200x630, what WhatsApp / LinkedIn / X render on a share) ----
+// Composites the REAL brand logo rather than a redrawn monogram, and names only
+// clients the site can still evidence. An earlier version listed "Singapore ·
+// Maldives" after those projects had been removed — a card that overclaims on
+// every share is worse than no card.
+const LOGO_W = 300;
+const logo = await sharp('src/assets/brand/mhc.png')
+  .resize({ width: LOGO_W })
+  .toBuffer();
+const logoH = Math.round((await sharp(logo).metadata()).height);
+
 const card = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
-  <rect width="1200" height="630" fill="#fff"/>
-  <rect x="0" y="0" width="1200" height="10" fill="#0880E0"/>
-  <g transform="translate(96,150)">
-    <rect x="0" y="0" width="110" height="110" rx="26" fill="none" stroke="#40B048" stroke-width="9"/>
-    <path d="M78 12c-10 2-16 9-15 17 9 1 16-5 17-12z" fill="#40B048"/>
-    <text x="55" y="76" text-anchor="middle" font-family="Arial,sans-serif" font-size="38" font-weight="700" fill="#0880E0">MH</text>
-  </g>
-  <text x="96" y="340" font-family="Arial,sans-serif" font-size="62" font-weight="700" fill="#0D1B26">Media Hore Creation</text>
-  <text x="96" y="404" font-family="Arial,sans-serif" font-size="31" fill="#5B7183">Software development &amp; IT consulting — Depok, Indonesia</text>
-  <text x="96" y="470" font-family="Arial,sans-serif" font-size="25" font-weight="600" fill="#40B048">Kemenperin · Kemenag · PUPR · Singapore · Maldives</text>
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="0" y="0" width="1200" height="14" fill="#0880E0"/>
+  <rect x="0" y="616" width="1200" height="14" fill="#40B048"/>
+
+  <text x="96" y="300" font-family="Arial,Helvetica,sans-serif" font-size="66" font-weight="800"
+        letter-spacing="-2" fill="#0D1B26">Software for ministries,</text>
+  <text x="96" y="374" font-family="Arial,Helvetica,sans-serif" font-size="66" font-weight="800"
+        letter-spacing="-2" fill="#0D1B26">schools and businesses.</text>
+
+  <text x="96" y="438" font-family="Arial,Helvetica,sans-serif" font-size="30" fill="#5B7183">Software development &amp; IT consulting — Indonesia</text>
+
+  <rect x="96" y="486" width="8" height="34" rx="4" fill="#40B048"/>
+  <text x="122" y="513" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700"
+        fill="#2E7E33">Kemenperin &#183; Kemenag &#183; PUPR &#183; SIAGA Pendis &#183; Al-Azhary</text>
 </svg>`;
-await sharp(Buffer.from(card)).png().toFile('public/social-card.png');
+
+await sharp(Buffer.from(card))
+  .composite([{ input: logo, top: 96, left: 96 }])
+  .png()
+  .toFile('public/social-card.png');
+
 console.log('icons + social card written to public/');

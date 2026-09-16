@@ -1,12 +1,12 @@
 export const id = {
   meta: {
-    title: 'MHCreation — Pengembangan Software & Konsultan IT, Depok',
+    title: 'MHCreation — Pengembangan Software & Konsultan IT, Indonesia',
     description:
-      'Kami membangun perangkat lunak dari nol hingga produk utuh — web, mobile dan desktop — untuk instansi pemerintah, pendidikan dan bisnis di Indonesia.',
+      'Pengembangan perangkat lunak dan konsultan IT di Indonesia. Kami membangun dan memelihara sistem untuk kementerian, sekolah dan bisnis — web, mobile, desktop.',
   },
   nav: { services: 'Layanan', work: 'Portofolio', about: 'Tentang', team: 'Tim', contact: 'Kontak' },
   hero: {
-    eyebrow: 'Konsultan teknologi · Depok, Indonesia',
+    eyebrow: 'Konsultan teknologi · Indonesia',
     title: 'Perangkat lunak untuk kementerian, sekolah dan bisnis.',
     lead:
       'Kami membangun dan memelihara sistem untuk tiga kementerian — Kemenperin, Kemenag dan PUPR — serta portal sekolah, situs perdagangan dan layanan desa.',

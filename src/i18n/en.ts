@@ -1,12 +1,12 @@
 export const en = {
   meta: {
-    title: 'MHCreation — Software Development & IT Consultant, Depok',
+    title: 'MHCreation — Software Development & IT Consultant, Indonesia',
     description:
-      'We build software from scratch to finished product — web, mobile and desktop — for government, education and business across Indonesia.',
+      'Software development and IT consulting in Indonesia. We build and maintain systems for government ministries, schools and businesses — web, mobile and desktop.',
   },
   nav: { services: 'Services', work: 'Work', about: 'About', team: 'Team', contact: 'Contact' },
   hero: {
-    eyebrow: 'Technology consultant · Depok, Indonesia',
+    eyebrow: 'Technology consultant · Indonesia',
     title: 'Software for ministries, schools and businesses.',
     lead:
       "We've built and maintained systems for three government ministries — Kemenperin, Kemenag and PUPR — alongside school portals, commerce sites and village services.",

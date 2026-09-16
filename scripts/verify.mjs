@@ -114,8 +114,15 @@ for (const page of pages) {
   const emptyAlt = (h.match(/alt=""/g) ?? []).length;
   emptyAlt === 0 ? ok(`${page}: no empty alt`) : bad(`${page}: ${emptyAlt} images with empty alt`);
 
-  const eager = (h.match(/<img(?![^>]*loading="lazy")[^>]*>/g) ?? []).length;
-  eager === 0 ? ok(`${page}: all images lazy-loaded`) : bad(`${page}: ${eager} image(s) not lazy-loaded`);
+  // Every image must be lazy EXCEPT the header logo, which is above the fold on
+  // every page. Lazy-loading it would delay first paint rather than help — eager
+  // is deliberate there. The exception is narrow: it matches only the logo's alt
+  // text, so a stray eager hero image or card screenshot still fails this check.
+  const nonLazy = (h.match(/<img(?![^>]*loading="lazy")[^>]*>/g) ?? []);
+  const unexpectedEager = nonLazy.filter(tag => !/alt="MHCreation"/.test(tag));
+  unexpectedEager.length === 0
+    ? ok(`${page}: all images lazy except the above-fold logo (${nonLazy.length} eager)`)
+    : bad(`${page}: ${unexpectedEager.length} image(s) eagerly loaded that should be lazy`);
 
   for (const s of ['103.122.35.17', 'intranet.jlm.net.id', '123rf', 'freepik', 'jquery', 'bootstrap.bundle']) {
     h.includes(s) ? bad(`${page}: "${s}" still present`) : ok(`${page}: no ${s}`);

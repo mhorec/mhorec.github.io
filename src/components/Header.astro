@@ -1,7 +1,8 @@
 ---
 import { site } from '../data/site';
 import { useTranslations, getAltPath, type Lang } from '../i18n';
-import Logo from './Logo.astro';
+import { Image } from 'astro:assets';
+import mhcLogo from '../assets/brand/mhc.png';
 
 interface Props { lang: Lang; path: string; }
 const { lang, path } = Astro.props;
@@ -17,9 +18,9 @@ const links = [
 ---
 <header class="sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-    <a href={`${prefix}/`} class="flex items-center gap-2 font-display text-lg font-extrabold tracking-[-0.02em] text-ink">
-      <Logo size={30} decorative />
-      <span>MHCreation</span>
+    <a href={`${prefix}/`} class="flex items-center">
+      <Image src={mhcLogo} alt="MHCreation" width={230} height={109} densities={[1, 2]}
+             class="h-11 w-auto" loading="eager" />
     </a>
 
     <nav class="ml-auto hidden md:block" aria-label="Main">
